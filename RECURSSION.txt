@@ -1,0 +1,121 @@
+#include<iostream>
+using namespace std;
+void Binary(int n) {
+	if (n != 0) {
+		Binary(n / 2);
+		cout << n % 2;
+	}
+}
+int Fibannacio(int n) {
+	if (n==1) {
+		return 0;
+	}
+	if (n == 2) {
+		return 1;
+	}
+   
+	return Fibannacio(n-1) + Fibannacio(n - 2);
+}
+int Factorial(int n) {
+	if (n == 0) {
+		return 1;
+	}
+	return n * Factorial(n - 1);
+}
+int CountDigits(int num) {
+	if (num > 0) {
+		return CountDigits(num / 10) + 1;
+	}
+	return 0;
+}
+int countSpecific(int num,int specific) {
+	if (num > 0) {
+		if (num % 10 == specific) {
+			return countSpecific(num / 10,specific) + 1;
+		}
+		return countSpecific(num / 10, specific);
+	}
+	return 0;
+
+}
+int Power(int a, int b) {
+	if (b == 0) {
+		return 1;
+	}
+	return a * Power(a, b-1);
+}
+int SOD(int num) {
+	if (num == 0) {
+		return 0;
+	}
+	return SOD(num / 10) + num % 10;
+}
+string reverse(string word, int index) {
+	static string word1 = "";
+	if (index == 0) {
+		return word1;
+	}
+	if (index > 0) {
+		
+			word1 += word[index - 1];
+			return reverse(word, index - 1);
+	}
+}
+string reverseString(const string& word, int  index = 0) {
+	if (index == word.length()) {
+		return "";
+	}
+	return reverseString(word, index + 1) + word[index];
+}
+int reverseint(int num,int reversednum=0) {
+	if (num == 0) {
+		return reversednum;
+	}
+	return reverseint(num / 10 , reversednum *10+num%10);
+
+}
+int F(int n) {
+	if (n <= 0) {
+		return 0;
+	}
+	if (n == 1) {
+		return 1;
+	}
+	if (n == 2) {
+		return 2;
+	}
+	if (n == 3) {
+		return 3;
+	}
+	if (n == 4) {
+		return 6;
+	}
+	if (n > 4) {
+		return F(n - 1) + F(n - 2) + F(n - 3) + F(n - 4);
+	}
+}
+int GCD(int a, int b) {
+	if (a == 0) {
+		return b;
+	}
+	return GCD(b % a, a);
+}
+int main() {
+	//int n = 10;
+	//Binary(n);
+	//cout << Fibannacio(5) << endl;
+	//cout << Factorial(5) << endl;
+	//cout << CountDigits(123467) << endl;
+	//cout << countSpecific(224265432, 2);
+	//cout << Power(2, 5);
+	//cout << SOD(12345);
+	//string word = "Hifza";
+	//cout << reverse(word, word.length()) << endl;
+	//cout << reverseString("Hifza") << endl;
+	//cout << reverseint(1234);
+	//for (int i =1; i <= 11; i++) {
+	//	cout << F(i) << "\t";
+	//}
+	cout << GCD(15, 20) << endl;
+	return 0;
+}

@@ -1,0 +1,261 @@
+#include<iostream>
+using namespace std;
+struct Node {
+    int  data;
+    Node* next;
+};
+class LinkedList {
+protected:
+    Node* head;
+    Node* tail;
+public:
+    LinkedList() {
+        head = nullptr;
+        tail = nullptr;
+    }
+    bool isEmpty() {
+        return head == nullptr && tail == nullptr;
+    }
+    void insertattail(int value) {
+        Node* nn = new Node;
+        nn->data = value;
+        nn->next = nullptr;
+        if (isEmpty()) {
+            head = nn;
+            tail = nn;
+        }
+        else if (head == tail) {
+            tail->next = nn;
+            tail = nn;
+        }
+        else {
+            tail->next = nn;
+            tail = nn;
+
+        }
+    }
+    void insertathead(int value) {
+        Node* nn = new Node;
+        nn->data = value;
+        nn->next = nullptr;
+        if (isEmpty()) {
+            head = nn;
+            tail = nn;
+        }
+        else {
+            nn->next = head;
+            head = nn;
+
+        }
+    }
+    int deleteFromtail() {
+        if (isEmpty()) {
+            return NULL;
+        }
+        else if (head == tail) {
+            int data = head->data;
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+            return data;
+        }
+        else {
+            Node* t = head;
+            while (1) {
+                t = t->next;
+                if (t->next == tail) {
+                    break;
+                }
+            }
+            t->next = nullptr;
+            int data = tail->data;
+            delete tail;
+            tail = t;
+            return data;
+        }
+    }
+    int deleteFromhead() {
+        if (isEmpty()) {
+            return NULL;
+        }
+        else if (head == tail) {
+            int data = head->data;
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+            return data;
+        }
+        else {
+            int data = head->data;
+            Node* t = head->next;
+            delete head;
+            head = t;
+            return data;
+        }
+    }
+    void display() {
+        if (isEmpty()) {
+            cout << " is Empty" << endl;
+        }
+        else {
+            Node* t = head;
+            while (1) {
+                cout << t->data << endl;
+                t = t->next;
+                if (t == nullptr) {
+                    break;
+                }
+            }
+        }
+    }
+    void reverse() {
+        if (isEmpty()) {
+
+        }
+        else {
+            Node* prev = nullptr;
+            Node* t = head;
+            Node* headsave = head;
+            Node* tailsave = tail;
+            while (t != nullptr) {
+                Node* tnext = t->next;
+                t->next = prev;
+                prev = t;
+                t = tnext;
+
+            }
+            head = tailsave;
+            tail = headsave;
+        }
+    }
+};
+class CircularLinkedList {
+protected:
+    Node* tail;
+public:
+    CircularLinkedList() {
+        tail = nullptr;
+    }
+    bool isEmpty() {
+        return tail == nullptr;
+    }
+    void insertattail(int value) {
+        Node* nn = new Node;
+        nn->data = value;
+        nn->next = nullptr;
+        if (isEmpty()) {
+            tail = nn;
+
+            tail->next = nn;
+
+        }
+        else if (tail->next == tail) {
+            nn->next = tail->next;
+            tail->next = nn;
+            tail = nn;
+        }
+        else {
+            nn->next = tail->next;
+            tail->next = nn;
+            tail = nn;
+        }
+    }
+    void insertathead(int value) {
+        Node* nn = new Node;
+        nn->data = value;
+        nn->next = nullptr;
+        if (isEmpty()) {
+            tail = nn;
+            tail->next = nn;
+        }
+        else {
+            nn->next = tail->next;
+            tail->next = nn;
+
+        }
+    }
+    int deleteFromtail() {
+        if (isEmpty()) {
+            return NULL;
+        }
+        else if (tail->next == tail) {
+            int data = tail->data;
+            delete tail;
+            tail = nullptr;
+            return data;
+        }
+        else {
+            Node* t = tail->next;
+            while (1) {
+                t = t->next;
+                if (t->next == tail) {
+                    break;
+                }
+            }
+            t->next = tail->next;
+            int data = tail->data;
+            delete tail;
+            tail = t;
+            return data;
+        }
+    }
+    int deleteFromhead() {
+        if (isEmpty()) {
+            return NULL;
+        }
+        else if (tail->next == tail) {
+            int data = tail->data;
+            delete tail;
+            tail = nullptr;
+            return data;
+        }
+        else {
+            int data = tail->next->data;
+            Node* t = tail->next->next;
+            delete tail->next;
+            tail->next = t;
+            return data;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << " is Empty" << endl;
+        }
+        else {
+            Node* t = tail->next;
+            while (1) {
+                cout << t->data << endl;
+                t = t->next;
+                if (t == tail->next) {
+                    break;
+                }
+            }
+        }
+    }
+
+    void reverseOrder(Node* t) {
+        if (t->next!= tail->next) {
+            reverseOrder(t->next);
+        }
+
+
+            cout << t->data << endl;
+    }
+    void reverse() {
+        reverseOrder(tail->next);
+    }
+};
+int main() {
+
+    CircularLinkedList L1;
+    L1.insertattail(1);
+    L1.insertattail(2);
+    L1.insertattail(3);
+    L1.insertattail(4);
+    L1.reverse();
+
+
+
+    return 0;
+}

@@ -1,0 +1,468 @@
+#include<iostream>
+using namespace std;
+struct Node {
+    int data;
+    Node* leftchild;
+    Node* rightchild;
+};
+class Tree {
+protected:
+    Node* root;
+public:
+    Tree() {
+        root = nullptr;
+    }
+    virtual void insert(int) = 0;
+    virtual bool Delete(int) = 0;
+    virtual void inorder() = 0;
+    virtual bool isEmpty() = 0;
+};
+class BST :public Tree {
+    void INORDER(Node* t) {
+        if (t != nullptr) {
+            INORDER(t->leftchild);
+            cout << t->data << endl;
+            INORDER(t->rightchild);
+        }
+    }
+    bool isValidHelper(Node* temp, int min, int max) {
+        if (temp == nullptr) {
+            return true;
+        }
+        if (temp->data <= min || temp->data > max) {
+                return false;
+            }
+        return   isValidHelper(temp->leftchild, min, temp->data) && isValidHelper(temp->rightchild, temp->data, max);
+        
+    }
+    void ascendeingSorted(Node* temp,int *arr,int &index) {
+        if (temp != nullptr) {
+            ascendeingSorted(temp->leftchild, arr,index);
+            arr[index++] = temp->data;
+            ascendeingSorted(temp->rightchild, arr,index);
+        }
+    }
+    int Count(Node* temp) {
+        if (temp == nullptr) {
+            return 0;
+        }
+        return Count(temp->leftchild) + Count(temp->rightchild) + 1;
+    }
+    bool SEARCH(Node* t, int data) {
+        if (t == nullptr) {
+            return false;
+        }
+        if (t->data == data) {
+            return true;
+        }
+        if (t->data > data) {
+        return    SEARCH(t->leftchild, data);
+        }
+        else {
+       return     SEARCH(t->rightchild, data);
+        }
+    }
+    Node* findLCA(Node* t, int data, int data2) {
+        if (t == nullptr) {
+            return nullptr;
+        }
+        if (data < t->data && data2<t->data) {
+            return findLCA(t->leftchild, data, data2);
+        }
+        if (data > t->data && data2>t->data) {
+            return findLCA(t->rightchild, data, data2);
+        }
+        return t;
+    }
+    int FindDistanceFromLCA(Node* t, int data, int distance) {
+        if (t != nullptr) {
+            if (t->data > data) {
+             return   FindDistanceFromLCA(t->leftchild, data, distance + 1);
+            }
+            if (t->data < data) {
+                return FindDistanceFromLCA(t->rightchild, data, distance + 1);
+            }
+            if (t->data == data) {
+                return distance;
+            }
+        }
+        else {
+            return -1;
+        }
+    }
+    bool identicalHelper(Node* t, Node* t1) {
+        if (t == nullptr && t1==nullptr) {
+            return true;
+        }
+        if (t == nullptr || t1 == nullptr) {
+            return false;
+        }
+        if (t->data != t1->data) {
+            return false;
+        }
+        return identicalHelper(t->leftchild, t1->leftchild) && identicalHelper(t->rightchild, t1->rightchild);
+    }
+    int heightHelper(Node* t) {
+        if (t == nullptr) {
+            return 0;
+        }
+        int left = heightHelper(t->leftchild);
+        int right = heightHelper(t->rightchild);
+        return left > right ? left + 1 : right + 1;
+    }
+    int BalanceHelper(Node* t1, bool& flag) {
+        if (t1 == nullptr) {
+            return 0;  // Base case: height of an empty tree is 0
+        }
+
+        int left = BalanceHelper(t1->leftchild, flag);
+        int right = BalanceHelper(t1->rightchild, flag);
+        // If any subtree is unbalanced, propagate -1 upwards
+        if (left == -1 || right == -1 || (left - right > 1) || (right - left > 1)) {
+            flag = false;
+            return -1;
+        }
+
+        return (left > right) ? (left + 1) : (right + 1);  // Return the actual height
+    }
+    int sumofNValuereturning(Node* t1,int n) {
+        if (t1 == nullptr) {
+            return 0;
+        }
+        if (t1->data > n) {
+            //cout << t1->data << endl;
+            return sumofNValuereturning(t1->leftchild, n) + sumofNValuereturning(t1->rightchild, n) + t1->data;
+        }
+        if (t1->data <= n) {
+            return  sumofNValuereturning(t1->rightchild, n);
+        }
+        return 0;
+    }
+    void sumofN(Node* t1, int n,int & sum) {
+        if (t1 != nullptr) {
+
+            if (t1->data > n) {
+                //cout << t1->data << endl;
+                sum += t1->data;
+                sumofN(t1->leftchild, n,sum);
+                sumofN(t1->rightchild, n,sum);
+            }
+            else {
+                sumofN(t1->rightchild, n,sum);
+            }
+        }
+    }
+    bool isBST(Node* t) {
+        static int prev = INT_MIN;
+        if (t == nullptr) {
+            return true;
+        }
+        if (!isBST(t->leftchild)) {
+            return false;
+        }
+        if (prev > t->data) {
+            return false;
+        }
+        prev = t->data;
+        if (!isBST(t->rightchild)) {
+            return false;
+        }
+    }
+    void sumofNONLEAF(Node* t, int& sum) {
+        if (t != nullptr) {
+            if (t->leftchild != nullptr || t->rightchild != nullptr) {
+                sum+=t->data;
+            }
+            sumofNONLEAF(t->leftchild, sum);
+            sumofNONLEAF(t->rightchild, sum);
+        }
+    }
+    int sumofNonLeaf(Node* t) {
+        if (t == nullptr) {
+            return 0;
+        }
+        if (t->leftchild == nullptr && t->rightchild == nullptr) {
+                return 0;
+        }
+
+      return sumofNonLeaf(t->leftchild) + sumofNonLeaf(t->rightchild)+t->data;
+        
+    }
+    void sumcount(Node*t,int &sumEven, int& sumODD, int& countEven, int& countODD) {
+        if (t != nullptr) {
+            if (t->data % 2 == 0) {
+                sumEven += t->data;
+                countEven++;
+            }
+            else {
+                sumODD += t->data;
+                countODD++;
+            }
+            sumcount(t->leftchild,sumEven,sumODD,countEven,countODD);
+            sumcount(t->rightchild, sumEven, sumODD, countEven, countODD);
+        }
+    }
+public:
+    void s() {
+        int e = 0, o = 0, se = 0, so = 0;
+        sumcount(root,se, so, e, o);
+        cout << "SumEven\t" << se << endl;
+        cout << "sumODD\t" << so << endl;
+        cout << "countEven\t" << e << endl;
+        cout << "countODD\t" << o << endl;
+
+    }
+    int sumNL() {
+        return          sumofNonLeaf(root);
+    }
+    bool is() {
+        return isBST(root);
+    }
+    int sum() {
+        int c = 0;
+        sumofN(root, 11,c);
+        return c;
+    }
+    bool isBalance() {
+        bool flag = true;
+        BalanceHelper(root, flag);
+        return flag;
+    }
+    int height() {
+        if (root == nullptr) {
+            return 0;
+        }
+        return heightHelper(root);
+    }
+    int Distance(int a, int b) {
+        Node* LCA = findLCA(root, a, b);
+        int d1 = FindDistanceFromLCA(LCA, a, 0);
+        int d2 = FindDistanceFromLCA(LCA, b, 0);
+        return d1 + d2;
+    }
+    void insert(int value) {
+        Node* nn = new Node;
+        nn->data = value;
+        nn->leftchild = nullptr;
+        nn->rightchild = nullptr;
+        if (isEmpty()) {
+            root = nn;
+        }
+        else {
+            Node* t = root;
+            while (1) {
+                if (t->data > value) {
+                    if (t->leftchild == nullptr) {
+                        t->leftchild = nn;
+                        break;
+                    }
+                    else {
+                        t = t->leftchild;
+                    }
+                }
+                else {
+                    if (t->rightchild == nullptr) {
+                        t->rightchild = nn;
+                        break;
+                    }
+                    else {
+                        t = t->rightchild;
+                    }
+
+                }
+            }
+        }
+    }
+    bool isEmpty() {
+        return root == nullptr;
+    }
+    void inorder() {
+        if (isEmpty()) {
+            cout << "tree is Empty" << endl;
+        }
+        else {
+            INORDER(root);
+        }
+    }
+    bool Delete(int value) {
+        if (isEmpty()) {
+            return true;
+        }
+        if (root->leftchild == nullptr && root->rightchild == nullptr) {
+            if (root->data == value) {
+                delete root;
+                root = nullptr;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        if (root->data == value && (root->leftchild == nullptr && root->rightchild != nullptr)) {
+            Node* temp = root->rightchild;
+            delete root;
+            root = temp;
+            return true;
+        }
+        if (root->data == value && (root->leftchild != nullptr && root->rightchild == nullptr)) {
+            Node* temp = root->leftchild;
+            delete root;
+            root = temp;
+            return true;
+
+        }
+        else {
+            Node* p = root;
+            Node* c = root;
+            Node* t = root;
+            while (true) {
+                if (t == nullptr) {
+                    return false;
+                }
+                if (t->data == value) {
+                    p = c;
+                    c = t;
+                    break;
+                }
+                if (t->data > value) {
+                    p = c;
+                    c = t;
+                    t = t->leftchild;
+
+                }
+                else {
+                    p = c;
+                    c = t;
+                    t = t->rightchild;
+
+
+                }
+            }
+            if (c->leftchild != nullptr && c->rightchild != nullptr) {
+                Node* t1 = c;
+                p = c;
+                c = c->rightchild;
+                while (true) {
+                    if (c->leftchild == nullptr) {
+                        t1->data = c->data;
+                        value = c->data;
+                        break;
+                    }
+                    p = c;
+                    c = c->leftchild;
+                }
+            }
+            if (c->leftchild == nullptr && c->rightchild == nullptr) {
+                if (p->data > value) {
+                    delete p->leftchild;
+                    p->leftchild = nullptr;
+                    c = nullptr;
+
+                }
+                else {
+                    delete p->rightchild;
+                    p->rightchild = nullptr;
+                    c = nullptr;
+
+                }
+                return true;
+            }
+            if (c->leftchild == nullptr && c->rightchild != nullptr) {
+                if (p->data > value) {
+                    p->leftchild = c->rightchild;
+                    delete c;
+                    c = nullptr;
+                }
+                else {
+                    p->rightchild = c->rightchild;
+                    delete c;
+                    c = nullptr;
+
+                }
+                return true;
+
+            }
+            if (c->leftchild != nullptr && c->rightchild == nullptr) {
+                if (p->data > value) {
+                    p->leftchild = c->leftchild;
+                    delete c;
+                    c = nullptr;
+                }
+                else {
+                    p->rightchild = c->leftchild;
+                    delete c;
+                    c = nullptr;
+
+                }
+                return true;
+
+            }
+
+            return false;
+        }
+    }
+    bool isValid() {
+        //return isValidHelper(root, INT_MIN, INT_MAX);
+        return isBST(root);
+    }
+    int countNodes() {
+        if (root == nullptr) {
+            return 0;
+        }
+        return Count(root);
+    }
+    int* ascSortedarray() {
+        int* arr = new int[countNodes()];
+        int index = 0;
+        ascendeingSorted(root,arr,index);
+        return arr;
+    }
+    bool search(int data) {
+        return SEARCH(root,data);
+    }
+    bool identical(const BST & tree1) {
+
+        return identicalHelper(root, tree1.root);
+    }
+};
+int main() {
+    BST tree;
+
+    // Insert elements into BST
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(15);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(12);
+     tree.insert(18);
+     tree.s();
+    //cout<< tree.sumNL();
+   //cout<< tree.is();
+    //cout << tree.sum() << endl;
+    //BST tree1;
+
+    // Insert elements into BST
+    //tree1.insert(10);
+    //tree1.insert(5);
+    //tree1.insert(15);
+    //tree1.insert(3);
+    //tree1.insert(7);
+    //tree1.insert(12);
+    //tree1.insert(18);
+    //tree1.insert(28);
+    //tree1.insert(28);
+
+    //cout << tree1.height() << endl;
+    //cout << (tree1.isBalance() ? "Balanced" : "Not Balanced") << endl;
+    //cout << tree1.height() << endl;
+    //int* arr = tree.ascSortedarray();
+    //for (int i = 0; i < tree.countNodes(); i++) {
+    //    cout << arr[i] << endl;
+    //}
+    //delete[]  arr;
+    //arr = nullptr;
+ //cout<<tree.Distance(3,5);
+    //cout << tree.identical(tree1) << endl;
+    return 0;
+}

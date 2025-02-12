@@ -1,0 +1,58 @@
+#include<iostream>
+using  namespace std;
+class CircularQueue{
+  protected:
+  int * arr;
+  int front;
+  int rear;
+  int size;
+  int currentSize;
+  public:
+  CircularQueue(int s):size(s){
+      arr=new  int[size];
+      front=0;
+      rear=0;
+      currentSize=0;
+  }
+  bool isFull(){
+      return size==currentSize;
+  }
+  void enqueue(int value){
+      if(isFull()){
+          cout<<"Its Full"<<endl;
+      }
+      else{
+                arr[rear%size]=value;
+      currentSize++;
+       rear++;
+
+      }
+  }
+  int dequeue(){
+      if(isEmpty()){
+          cout<<"Its Empty"<<endl;
+          return -1;
+      }
+      int data=arr[front%size];
+      front++;
+      currentSize--;
+      return data;
+  }
+   int peek(){
+      if(isEmpty()){
+          cout<<"Its Empty"<<endl;
+                    return -1;
+
+      }
+      int data=arr[front%size];
+      return data;
+  }
+  bool isEmpty(){
+      return currentSize==0;
+  }
+void display(){
+    for(int i=front;i<rear;i++){
+        cout<<arr[i%size]<<endl;
+    }
+}
+};

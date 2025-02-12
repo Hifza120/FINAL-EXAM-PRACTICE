@@ -1,0 +1,14 @@
+#include<unordered_map>
+#include<iostream>
+using namespace std;
+int main(){
+    unordered_map<string,int> uwap;
+     uwap["Bisma"]=10;
+     uwap["HIFZA"]=19;
+     uwap["rameen"]=20;
+     uwap.erase("Bisma");
+    for(auto x: uwap){
+        cout<<x.first<<"\t"<<x.second<<endl;
+    }
+    return 0;
+}

@@ -1,0 +1,18 @@
+#include<unordered_map>
+#include<iostream>
+#include<fstream>
+using namespace std;
+int main(){
+    unordered_map<string,int> uwap;
+    ifstream fin("input.txt");
+    while(!fin.eof()){
+        string word;
+        fin>>word;
+        uwap[word]++;
+    }
+    
+    for(auto x: uwap){
+        cout<<x.first<<"\t"<<x.second<<endl;
+    }
+    return 0;
+}

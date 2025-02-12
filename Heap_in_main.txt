@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+void heapify(int arr[],int size,int index){
+    int smallest=index;
+    int left=2*index+1;
+    int right=2*index+2;
+    if(left<size&& arr[smallest]>arr[left]){
+        smallest=left;
+        
+    }
+    if(right<size&& arr[smallest]>arr[right]){
+        smallest=right;
+    }
+    if(smallest!=index){
+        swap(arr[smallest],arr[index]);
+        heapify(arr,size,smallest);
+    }
+
+}
+void heapsort(int arr[],int  size){
+    while(size>0){
+        cout<<arr[0]<<endl;
+        swap(arr[0],arr[size-1]);
+        size--;
+        heapify(arr,size,0);
+    }
+}
+int main(){
+    int arr[7]={9,0,7,2,1,4,8};
+    int size=7;
+    for(int i=size/2;i>=0;i--){
+        heapify(arr,size,i);
+    }
+    heapsort(arr,size);
+
+    return 0;
+}
